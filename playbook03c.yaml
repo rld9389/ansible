@@ -1,0 +1,62 @@
+---
+- name: Our first play 
+  hosts: futurama
+  vars:
+          batman:
+                  - Gordon
+                  - Barbara
+                  - Riddler
+                  - Joker
+                  - ClayFace
+
+          superman:
+                  - Lois
+                  - Doomsday
+                  - Zod
+
+  tasks:
+   - name: Get the file from fetch bender
+     fetch:
+             src: secondfloor.txt
+             dest: /tmp/secondfloor.txt.{{ inventory_hostname }}
+             flat: yes
+
+   - name: Learn to print stuff to the screen
+     debug:
+             # msg: "Just want to print my message to the screen"
+             #var: batman
+             msg: "A character in the Batman series is {{ item }}"
+
+
+     loop: "{{  batman  }}"
+             #  - name: Install steam locomotive on ALL machines
+             # apt:
+             # name: sl
+             # state: present
+             #    become: yes
+
+   - name: Trying to copy a bunch of files back from a remote system
+     shell: (cd ~; find . -maxdepth 1 -type f`) | cut -d'/' -f2
+     register: files_to_copy
+
+   - name: A temp to look at files_to_copy
+     debug:
+             var: files_to_copy.stdout_lines
+             #msg: "I am showing {{ files_to_copy }}"
+
+   - name: Grab a blob of files defined by files_to_copy
+     fetch:
+             src: "{{ item }}"
+             dest: /tmp/
+     loop: "{{ files_to _copy.stdout_lines }}"
+
+     #- name: Our second play
+     # hosts: farnsworth
+
+     # tasks:
+     #    - name: Install steam locomotoive on all RHEL machines
+     #      yum:
+     #              name: sl
+     #              state: present
+     #      become: yes
+
