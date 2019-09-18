@@ -1,0 +1,9 @@
+---
+- name: Pull GitRepo from Github and deploy on remote hosts
+  hosts: futurama
+
+  tasks: 
+          - name: Pull from GitHub repo
+            git:
+                    repo: https://github.com/rld9389/ansible-playbook
+                    dest: /tmp/ansible/
